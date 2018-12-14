@@ -1,60 +1,33 @@
 import React from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
-import { Video } from "expo";
-import { MaterialIcons, Octicons } from "@expo/vector-icons";
-// import {
-//   Image,
-//   Video,
-//   Transformation,
-//   CloudinaryContext
-// } from "cloudinary-react";
+import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
 
-export default class App extends React.Component {
-  state = {
-    mute: false,
-    shouldPlay: true
-  };
+// Import the screens
+import Chat from "./components/Chat";
+import Main from "./components/Main";
 
-  handlePlayAndPause = () => {
-    this.setState(prevState => ({
-      shouldPlay: !prevState.shouldPlay
-    }));
-  };
+class App extends React.Component {
+  constructor() {
+    super();
 
-  handleVolume = () => {
-    this.setState(prevState => ({
-      mute: !prevState.mute
-    }));
-  };
+    this.state = {
+      fullHeight: Dimensions.get("window").height,
+      fullWidth: Dimensions.get("window").width
+    };
+  }
 
   render() {
-    var { height, width } = Dimensions.get("window");
     return (
       <View style={styles.container}>
-        <Video
-          source={{
-            uri:
-              "https://res.cloudinary.com/dfgicsvhy/video/upload/v1536259867/test/IMG_3846.mp4"
-          }}
-          shouldPlay={this.state.shouldPlay}
-          resizeMode="cover"
-          style={{ width, height }}
-          isMuted={this.state.mute}
-        />
-        <View style={styles.controlBar}>
-          <MaterialIcons
-            name={this.state.mute ? "volume-mute" : "volume-up"}
-            size={45}
-            color="white"
-            onPress={this.handleVolume}
-          />
-          <MaterialIcons
-            name={this.state.shouldPlay ? "pause" : "play-arrow"}
-            size={45}
-            color="white"
-            onPress={this.handlePlayAndPause}
-          />
-        </View>
+        <ScrollView
+          horizontal={true}
+          // pagingEnabled={true}
+          decelerationRate={0}
+          snapToInterval={this.state.fullWidth} //your element width
+          snapToAlignment={"center"}
+        >
+          <Main />
+          <Chat />
+        </ScrollView>
       </View>
     );
   }
@@ -65,17 +38,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
-  },
-  controlBar: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 45,
-    flexDirection: "row",
-    alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)"
+    width: Dimensions.get("window").width
   }
 });
+
+export default App;
